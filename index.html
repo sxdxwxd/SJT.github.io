@@ -8,7 +8,6 @@
       href="https://cdn.bootcdn.net/ajax/libs/twitter-bootstrap/5.3.0/css/bootstrap.min.css"
       rel="stylesheet"
     />
-    <script src="https://cdn.jsdelivr.net/npm/echarts@5.4.3/dist/echarts.min.js"></script>
     <style>
       .bg-light {
         background-color: #f8f9fa !important;
@@ -64,9 +63,6 @@
         <h2>送水记录与耗水量统计</h2>
       </div>
 
-      <!-- ECharts图表容器 -->
-      <div id="waterChart" class="chart-container"></div>
-
       <table class="table table-hover table-striped">
         <thead>
           <tr>
@@ -117,7 +113,6 @@
       // 初始化页面
       function init() {
         renderTable();
-        initChart();
       }
 
       // 表格分页渲染
@@ -163,95 +158,11 @@
         }
       }
 
-      // 初始化ECharts图表
-      function initChart() {
-        const chartDom = document.getElementById('waterChart');
-        const myChart = echarts.init(chartDom);
-        
-        // 提取图表数据
-        const dates = records.map(item => item.date);
-        const classTotals = records.map(item => parseInt(item.classTotal));
-        
-        const option = {
-          title: {
-            text: '教室耗水量趋势',
-            left: 'center'
-          },
-          tooltip: {
-            trigger: 'axis'
-          },
-          legend: {
-            data: ['教室总计'],
-            bottom: 0
-          },
-          grid: {
-            left: '3%',
-            right: '4%',
-            bottom: '15%',
-            containLabel: true
-          },
-          xAxis: {
-            type: 'category',
-            data: dates,
-            axisLabel: {
-              rotate: 30,
-              interval: 0
-            }
-          },
-          yAxis: {
-            type: 'value',
-            name: '数量'
-          },
-          series: [
-            {
-              name: '教室总计',
-              type: 'line',
-              data: classTotals,
-              smooth: true,
-              markPoint: {
-                data: [
-                  { type: 'max', name: '最大值' },
-                  { type: 'min', name: '最小值' }
-                ]
-              },
-              markLine: {
-                data: [
-                  { type: 'average', name: '平均值' }
-                ]
-              }
-            }
-          ],
-          media: [
-            {
-              query: {
-                maxWidth: 500
-              },
-              option: {
-                grid: {
-                  bottom: '20%'
-                },
-                xAxis: {
-                  axisLabel: {
-                    rotate: 45,
-                    fontSize: 10
-                  }
-                }
-              }
-            }
-          ]
-        };
-
-        myChart.setOption(option);
-        
-        // 响应窗口大小变化
-        window.addEventListener('resize', function() {
-          myChart.resize();
-        });
-      }
 
       init();
     </script>
   </body>
 </html>
+
 
 
